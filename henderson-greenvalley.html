@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Village Cat · Monthly Specials</title>
+<style>
+  :root{
+    --bg:#f6f3ee;
+    --card:#ffffff;
+    --ink:#3a4147;
+    --charcoal:#424B52;
+    --tan:#B79573;
+    --tan-deep:#a8814f;
+    --terra:#a35b4c;
+    --muted:#8a8880;
+    --line:#e7e3db;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    padding:22px 18px 48px;line-height:1.4;
+  }
+  .wrap{max-width:1220px;margin:0 auto}
+
+  /* Brand bar */
+  .brandbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+  .brand-logo{height:52px;width:auto;display:block}
+  .brand-actions{display:flex;gap:10px;flex-wrap:wrap}
+  .hbtn{text-decoration:none;font-size:.85rem;font-weight:700;padding:9px 16px;border-radius:999px;transition:.15s;white-space:nowrap}
+  .hbtn-solid{background:var(--charcoal);color:#fff;border:1px solid var(--charcoal)}
+  .hbtn-solid:hover{background:#333a40}
+  .hbtn-ghost{background:transparent;color:var(--charcoal);border:1px solid #cfc8bc}
+  .hbtn-ghost:hover{border-color:var(--charcoal)}
+
+  .eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--tan-deep)}
+  h1{font-size:1.8rem;letter-spacing:-.02em;color:var(--charcoal);margin-top:2px}
+  .sub{color:var(--muted);font-size:.95rem;margin-top:4px;max-width:760px}
+  .countdown{
+    display:inline-flex;align-items:center;gap:8px;margin-top:13px;
+    background:var(--charcoal);color:#fff;font-size:.85rem;font-weight:600;
+    padding:8px 14px;border-radius:999px;
+  }
+  .countdown b{color:var(--tan)}
+
+  /* Sponsor video band */
+  .spotlight{margin:22px 0 26px}
+  .sponsors{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .sponsor{display:flex;flex-direction:column}
+  .sponsor-name{font-weight:800;color:var(--charcoal);font-size:1rem;margin-bottom:8px}
+  .spotlight-frame{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .spotlight-frame .ft{display:block;width:100%}
+  .sponsor-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:220px;color:var(--muted);border:1px dashed #d4cdc1;border-radius:var(--radius);background:var(--card);padding:22px}
+  .sponsor-empty strong{color:var(--charcoal);font-size:.98rem;margin-bottom:5px}
+  .sponsor-empty span{font-size:.84rem;max-width:230px;line-height:1.45}
+  @media (max-width:780px){.sponsors{grid-template-columns:1fr}}
+
+  .pills{display:flex;gap:9px;flex-wrap:wrap;margin:18px 0 6px}
+  .pill{
+    border:1px solid var(--line);background:var(--card);color:var(--ink);
+    padding:8px 14px;border-radius:999px;font-size:.88rem;font-weight:700;
+    cursor:pointer;transition:.15s;
+  }
+  .pill:hover{border-color:#d4cdc1}
+  .pill.active{background:var(--charcoal);border-color:var(--charcoal);color:#fff}
+  .zone-label{
+    display:flex;align-items:center;gap:9px;margin:20px 2px 12px;
+    font-size:.82rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--tan-deep);
+  }
+  .zone-label.plain{color:var(--muted);margin-top:6px}
+  .zone-label::after{content:"";flex:1;height:1px;background:var(--line)}
+  .spotlight .zone-label{margin-top:0}
+  .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:24px}
+  .card{
+    position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:15px;display:flex;flex-direction:column;box-shadow:0 1px 3px rgba(0,0,0,.04);min-height:268px;
+  }
+  .card.featured{border:2px solid var(--tan);box-shadow:0 3px 16px rgba(183,149,115,.22)}
+  .ribbon{
+    position:absolute;top:13px;right:13px;background:var(--tan);color:#3a3025;
+    font-size:.67rem;font-weight:800;letter-spacing:.03em;padding:4px 9px;border-radius:999px;
+  }
+  .tag{display:inline-flex;align-items:center;gap:5px;align-self:flex-start;font-size:.69rem;font-weight:800;padding:4px 8px;border-radius:999px;margin-bottom:9px}
+  .tag.specials{color:#8a6d47;background:#f0e8da}
+  .tag.events{color:#8b4d42;background:#f4e6e2}
+  .tag.noteworthy{color:#4a5560;background:#e8ebed}
+  .offer-headline{font-size:1.04rem;font-weight:800;line-height:1.25;color:var(--charcoal);padding-right:76px;margin-bottom:9px}
+  .business{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+  .avatar{width:40px;height:40px;flex:0 0 40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;color:#fff}
+  .business h3{font-size:.98rem;line-height:1.15;color:var(--charcoal)}
+  .biz-type{color:var(--terra);font-size:.8rem;font-weight:600;margin-top:2px}
+  .details{color:#55534d;font-size:.86rem;margin-bottom:8px}
+  .terms{color:var(--muted);font-size:.78rem;margin-bottom:9px}
+  .meta{color:var(--muted);font-size:.78rem;margin-bottom:12px}
+  .actions{margin-top:auto}
+  .btn{display:block;width:100%;text-align:center;text-decoration:none;font-size:.85rem;font-weight:700;padding:9px 11px;border-radius:10px;transition:.15s}
+  .btn-primary{background:var(--charcoal);color:#fff;border:1px solid var(--charcoal)}
+  .btn-primary:hover{background:#333a40}
+  .btn-vc{background:transparent;color:var(--charcoal);border:1px solid #cfc8bc;margin-top:7px;font-size:.82rem;padding:8px 11px}
+  .btn-vc:hover{border-color:var(--charcoal)}
+  .empty{display:none;text-align:center;color:var(--muted);padding:38px 10px}
+
+  /* Footer */
+  .footer{margin-top:30px;padding-top:20px;border-top:1px solid var(--line)}
+  .footer .disclaimer{color:var(--muted);font-size:.8rem;max-width:900px;line-height:1.55;margin-bottom:13px}
+  .footer .flinks{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:9px}
+  .footer .flinks a{color:var(--charcoal);font-size:.82rem;font-weight:600;text-decoration:none}
+  .footer .flinks a:hover{text-decoration:underline}
+  .footer .flinks .dot{color:var(--muted);font-size:.8rem}
+  .footer .copyright{color:var(--muted);font-size:.78rem}
+
+  @media (max-width:1050px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media (max-width:780px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media (max-width:560px){
+    body{padding:18px 14px 36px}
+    .grid{grid-template-columns:1fr}
+    .card{min-height:0}
+    .brand-logo{height:42px}
+    .brandbar{gap:12px}
+    .hbtn{padding:8px 13px;font-size:.82rem}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brandbar">
+    <img class="brand-logo" src="data:image/png;base64,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" alt="Village Cat">
+    <div class="brand-actions">
+      <a class="hbtn hbtn-solid" href="https://thevillagecat.com">Open the Village Cat App</a>
+      <a class="hbtn hbtn-ghost" href="#">Partner With Us</a>
+    </div>
+  </div>
+
+  <div class="eyebrow">Henderson · Green Valley</div>
+  <h1><span id="boardMonth">August</span> Specials</h1>
+  <p class="sub">Monthly specials, events, and noteworthy updates from neighborhood businesses.</p>
+  <div class="countdown">🗓️ Ends in <b><span id="daysLeft">26 days</span></b> · board refreshes <span id="nextBoardDate">September 1</span></div>
+
+  <section class="spotlight">
+    <div class="zone-label">▶ This month’s sponsors</div>
+    <div class="sponsors">
+      <div class="sponsor">
+        <div class="sponsor-name">Ember &amp; Crust Pizzeria</div>
+        <div class="spotlight-frame">
+          <div data-key="Single Video Brutalist" class="ft" id="ftg7rw536"></div>
+        </div>
+      </div>
+      <div class="sponsor">
+        <div class="sponsor-name">Juniper Yoga Studio</div>
+        <div class="spotlight-frame">
+          <div data-key="Single Video Playful" class="ft" id="ftbxn2dps"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="pills" id="filters">
+    <button class="pill active" data-filter="all">All</button>
+    <button class="pill" data-filter="specials">🏷️ Specials</button>
+    <button class="pill" data-filter="events">🎶 Events</button>
+    <button class="pill" data-filter="noteworthy">📣 New &amp; Noteworthy</button>
+    <button class="pill" data-filter="featured">⭐ Featured</button>
+  </div>
+
+  <div class="zone-label" id="featuredLabel">⭐ Featured this month</div>
+  <div class="grid" id="featuredGrid">
+    <article class="card featured" data-type="specials" data-featured="true">
+      <span class="ribbon">⭐ Featured</span>
+      <span class="tag specials">🏷️ Special</span>
+      <p class="offer-headline">20% Off Any 60-Minute Massage</p>
+      <div class="business"><div class="avatar" style="background:#a35b4c">DB</div><div><h3>Desert Bloom Spa</h3><p class="biz-type">Massage &amp; Facials</p></div></div>
+      <p class="details">Save 20% on any 60-minute massage booked this month.</p>
+      <p class="terms">New clients only · Appointment required</p>
+      <p class="meta">📍 Green Valley · Valid through <span class="monthLabel">August</span> 31</p>
+      <div class="actions"><a class="btn btn-primary" href="#">Book This Special</a><a class="btn btn-vc" href="https://thevillagecat.com">View on Village Cat</a></div>
+    </article>
+
+    <article class="card featured" data-type="events" data-featured="true">
+      <span class="ribbon">⭐ Featured</span>
+      <span class="tag events">🎶 Event</span>
+      <p class="offer-headline">Summer Wine Night on the Patio</p>
+      <div class="business"><div class="avatar" style="background:#424B52">CF</div><div><h3>Copper Fork Kitchen</h3><p class="biz-type">Breakfast &amp; Lunch</p></div></div>
+      <p class="details">A guided tasting with small plates, live acoustic music, and patio seating.</p>
+      <p class="terms">Friday, August 21 · Reservations recommended</p>
+      <p class="meta">📍 Green Valley · 6:30–9:00 PM</p>
+      <div class="actions"><a class="btn btn-primary" href="#">Reserve a Table</a><a class="btn btn-vc" href="https://thevillagecat.com">View on Village Cat</a></div>
+    </article>
+
+    <article class="card featured" data-type="noteworthy" data-featured="true">
+      <span class="ribbon">⭐ Featured</span>
+      <span class="tag noteworthy">📣 New &amp; Noteworthy</span>
+      <p class="offer-headline">Second Location Coming to Summerlin</p>
+      <div class="business"><div class="avatar" style="background:#B79573">CB</div><div><h3>Cornerstone Brew Co.</h3><p class="biz-type">Brewery</p></div></div>
+      <p class="details">A new taproom and kitchen is scheduled to open later this fall.</p>
+      <p class="terms">Opening updates will be posted as available</p>
+      <p class="meta">📍 Summerlin · Coming soon</p>
+      <div class="actions"><a class="btn btn-primary" href="#">See What’s Coming</a><a class="btn btn-vc" href="https://thevillagecat.com">View on Village Cat</a></div>
+    </article>
+
+    <article class="card featured" data-type="specials" data-featured="true">
+      <span class="ribbon">⭐ Featured</span>
+      <span class="tag specials">🏷️ Special</span>
+      <p class="offer-headline">Free Coffee Flight for the First 50 Brunch Guests</p>
+      <div class="business"><div class="avatar" style="background:#7a8a5f">DG</div><div><h3>The Daily Grind</h3><p class="biz-type">Coffee &amp; Café</p></div></div>
+      <p class="details">Sunday brunch guests receive a complimentary tasting flight while supplies last.</p>
+      <p class="terms">First 50 guests · Entrée purchase required</p>
+      <p class="meta">📍 Henderson · Sundays in <span class="monthLabel">August</span></p>
+      <div class="actions"><a class="btn btn-primary" href="#">See Brunch Details</a><a class="btn btn-vc" href="https://thevillagecat.com">View on Village Cat</a></div>
+    </article>
+  </div>
+
+  <div class="zone-label plain" id="moreLabel">More from local businesses</div>
+  <div class="grid" id="regularGrid">
+    <article class="card" data-type="specials" data-featured="false">
+      <span class="tag specials">🏷️ Special</span>
+      <p class="offer-headline">$2 Street Tacos Every Tuesday</p>
+      <div class="business"><div class="avatar" style="background:#7a8a5f">EC</div><div><h3>El Camino Cantina</h3><p class="biz-type">Mexican</p></div></div>
+      <p class="details">Street tacos are $2 each, plus half-price margarita pitchers with any entrée.</p>
+      <p class="terms">Dine-in only · Tuesdays</p>
+      <p class="meta">📍 Henderson · Tuesdays in <span class="monthLabel">August</span></p>
+      <div class="actions"><a class="btn btn-primary" href="#">View Special</a><a class="btn btn-vc" href="https://thevillagecat.com">View on Village Cat</a></div>
+    </article>
+
+    <article class="card" data-type="specials" data-featured="false">
+      <span class="tag specials">🏷️ Special</span>
+      <p class="offer-headline">Free Gloss With Any Color Service</p>
+      <div class="business"><div class="avatar" style="background:#424B52">JC</div><div><h3>Jamie Cooper Hair</h3><p class="biz-type">Salon</p></div></div>
+      <p class="details">Book any full color service and receive a complimentary gloss treatment.</p>
+      <p class="terms">Appointment required · Select stylists</p>
+      <p class="meta">📍 Green Valley · Valid through <span class="monthLabel">August</span> 31</p>
+      <div class="actions"><a class="btn btn-primary" href="#">Book This Special</a><a class="btn btn-vc" href="https://thevillagecat.com">View on Village Cat</a></div>
+    </article>
+
+    <article class="card" data-type="events" data-featured="false">
+      <span class="tag events">🎶 Event</span>
+      <p class="offer-headline">Jazz Night in the Courtyard</p>
+      <div class="business"><div class="avatar" style="background:#a35b4c">SL</div><div><h3>Studio Lux</h3><p class="biz-type">Beauty &amp; Wellness</p></div></div>
+      <p class="details">An evening of live jazz, mocktails, light bites, and local vendors.</p>
+      <p class="terms">Saturday, August 15 · No cover</p>
+      <p class="meta">📍 Green Valley · 7:00–10:00 PM</p>
+      <div class="actions"><a class="btn btn-primary" href="#">Event Details</a><a class="btn btn-vc" href="https://thevillagecat.com">View on Village Cat</a></div>
+    </article>
+
+    <article class="card" data-type="noteworthy" data-featured="false">
+      <span class="tag noteworthy">📣 New &amp; Noteworthy</span>
+      <p class="offer-headline">Now Open Sundays</p>
+      <div class="business"><div class="avatar" style="background:#B79573">SP</div><div><h3>Still Point Yoga</h3><p class="biz-type">Yoga Studio</p></div></div>
+      <p class="details">Sunday classes now include gentle flow, restorative yoga, and a noon sound bath.</p>
+      <p class="terms">New Sunday schedule begins August 9</p>
+      <p class="meta">📍 Valleywide · Weekly</p>
+      <div class="actions"><a class="btn btn-primary" href="#">See Sunday Schedule</a><a class="btn btn-vc" href="https://thevillagecat.com">View on Village Cat</a></div>
+    </article>
+
+    <article class="card" data-type="specials" data-featured="false">
+      <span class="tag specials">🏷️ Special</span>
+      <p class="offer-headline">Free First Exam for New Pet Patients</p>
+      <div class="business"><div class="avatar" style="background:#a35b4c">PC</div><div><h3>Paws &amp; Claws Vet</h3><p class="biz-type">Veterinary</p></div></div>
+      <p class="details">New dog and cat patients receive their first standard wellness exam at no charge.</p>
+      <p class="terms">New patients only · Medical services not included</p>
+      <p class="meta">📍 Henderson · Valid through <span class="monthLabel">August</span> 31</p>
+      <div class="actions"><a class="btn btn-primary" href="#">Book First Visit</a><a class="btn btn-vc" href="https://thevillagecat.com">View on Village Cat</a></div>
+    </article>
+
+    <article class="card" data-type="events" data-featured="false">
+      <span class="tag events">🎶 Event</span>
+      <p class="offer-headline">Yoga for a Cause Fundraiser</p>
+      <div class="business"><div class="avatar" style="background:#7a8a5f">YC</div><div><h3>Yoga Collective</h3><p class="biz-type">Yoga Studio</p></div></div>
+      <p class="details">A community flow class followed by refreshments and a raffle benefiting local schools.</p>
+      <p class="terms">Sunday, August 23 · Suggested donation $15</p>
+      <p class="meta">📍 Summerlin · 10:00 AM</p>
+      <div class="actions"><a class="btn btn-primary" href="#">RSVP</a><a class="btn btn-vc" href="https://thevillagecat.com">View on Village Cat</a></div>
+    </article>
+
+    <article class="card" data-type="noteworthy" data-featured="false">
+      <span class="tag noteworthy">📣 New &amp; Noteworthy</span>
+      <p class="offer-headline">New Seasonal Menu Has Arrived</p>
+      <div class="business"><div class="avatar" style="background:#424B52">BL</div><div><h3>Bloom &amp; Ladle</h3><p class="biz-type">Café</p></div></div>
+      <p class="details">The late-summer menu adds peach salads, chilled soups, and house-made lemonades.</p>
+      <p class="terms">Available while seasonal ingredients last</p>
+      <p class="meta">📍 Green Valley · Available now</p>
+      <div class="actions"><a class="btn btn-primary" href="#">See the Menu</a><a class="btn btn-vc" href="https://thevillagecat.com">View on Village Cat</a></div>
+    </article>
+
+    <article class="card" data-type="specials" data-featured="false">
+      <span class="tag specials">🏷️ Special</span>
+      <p class="offer-headline">Teachers Get a Free Drink With Lunch</p>
+      <div class="business"><div class="avatar" style="background:#B79573">TG</div><div><h3>The Garden Table</h3><p class="biz-type">Café &amp; Kitchen</p></div></div>
+      <p class="details">Local teachers receive one complimentary house drink with any lunch purchase.</p>
+      <p class="terms">Valid school ID required · Weekdays only</p>
+      <p class="meta">📍 Henderson · Valid through <span class="monthLabel">August</span> 31</p>
+      <div class="actions"><a class="btn btn-primary" href="#">See Offer Details</a><a class="btn btn-vc" href="https://thevillagecat.com">View on Village Cat</a></div>
+    </article>
+  </div>
+
+  <div class="empty" id="empty">No items match this filter.</div>
+
+  <footer class="footer">
+    <p class="disclaimer">Offers are submitted by participating businesses and may change or end without notice. Village Cat and Six Five Apps are not responsible for pricing errors, availability, or fulfillment of advertised offers. Contact the business directly with questions regarding any promotion.</p>
+    <div class="flinks">
+      <a href="#">Terms of Use</a><span class="dot">•</span><a href="#">Privacy Policy</a><span class="dot">•</span><a href="#">Contact Us</a>
+    </div>
+    <p class="copyright">© 2026 65 Apps. All rights reserved.</p>
+  </footer>
+</div>
+
+<script src="https://wdg.fouita.com/widgets/0x4f5731.js"></script>
+<script src="https://wdg.fouita.com/widgets/0x4f5801.js"></script>
+<script>
+(function(){
+  var boardYear = 2026;
+  var boardMonth = 7; // 0 = January, 7 = August
+
+  var boardStart = new Date(boardYear, boardMonth, 1);
+  var boardEnd = new Date(boardYear, boardMonth + 1, 0, 23, 59, 59);
+  var nextBoard = new Date(boardYear, boardMonth + 1, 1);
+  var now = new Date();
+  var monthName = boardStart.toLocaleString('en-US',{month:'long'});
+
+  document.getElementById('boardMonth').textContent = monthName;
+  document.querySelectorAll('.monthLabel').forEach(function(el){el.textContent = monthName;});
+  document.getElementById('nextBoardDate').textContent = nextBoard.toLocaleDateString('en-US',{month:'long',day:'numeric'});
+
+  var days = Math.max(0, Math.ceil((boardEnd - now)/(1000*60*60*24)));
+  document.getElementById('daysLeft').textContent = days + (days === 1 ? ' day' : ' days');
+
+  var pills = document.querySelectorAll('.pill');
+  var cards = Array.from(document.querySelectorAll('.card'));
+  var featuredGrid = document.getElementById('featuredGrid');
+  var regularGrid = document.getElementById('regularGrid');
+  var featuredLabel = document.getElementById('featuredLabel');
+  var moreLabel = document.getElementById('moreLabel');
+  var empty = document.getElementById('empty');
+
+  function applyFilter(filter){
+    var featuredVisible = 0;
+    var regularVisible = 0;
+
+    cards.forEach(function(card){
+      var isFeatured = card.dataset.featured === 'true';
+      var match = filter === 'all' || (filter === 'featured' && isFeatured) || card.dataset.type === filter;
+      card.style.display = match ? 'flex' : 'none';
+      if(match){isFeatured ? featuredVisible++ : regularVisible++;}
+    });
+
+    featuredGrid.style.display = featuredVisible ? 'grid' : 'none';
+    featuredLabel.style.display = featuredVisible ? 'flex' : 'none';
+    regularGrid.style.display = regularVisible ? 'grid' : 'none';
+    moreLabel.style.display = regularVisible ? 'flex' : 'none';
+    empty.style.display = (featuredVisible + regularVisible) ? 'none' : 'block';
+  }
+
+  pills.forEach(function(pill){
+    pill.addEventListener('click', function(){
+      pills.forEach(function(item){item.classList.remove('active');});
+      pill.classList.add('active');
+      applyFilter(pill.dataset.filter);
+    });
+  });
+})();
+</script>
+</body>
+</html>
