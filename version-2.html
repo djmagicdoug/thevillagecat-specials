@@ -48,6 +48,8 @@
   /* Sponsor video band */
   .spotlight{margin:22px 0 26px}
   .sponsors{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .sponsor{display:flex;flex-direction:column}
+  .sponsor-name{font-weight:800;color:var(--charcoal);font-size:1rem;margin-bottom:8px}
   .spotlight-frame{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.04)}
   .spotlight-frame .ft{display:block;width:100%}
   .sponsor-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:220px;color:var(--muted);border:1px dashed #d4cdc1;border-radius:var(--radius);background:var(--card);padding:22px}
@@ -140,11 +142,17 @@
   <section class="spotlight">
     <div class="zone-label">▶ This month’s sponsors</div>
     <div class="sponsors">
-      <div class="spotlight-frame">
-        <div data-key="Single Video Brutalist" class="ft" id="ftg7rw536"></div>
+      <div class="sponsor">
+        <div class="sponsor-name">Ember &amp; Crust Pizzeria</div>
+        <div class="spotlight-frame">
+          <div data-key="Single Video Brutalist" class="ft" id="ftg7rw536"></div>
+        </div>
       </div>
-      <div class="spotlight-frame">
-        <div data-key="Single Video Playful" class="ft" id="ftbxn2dps"></div>
+      <div class="sponsor">
+        <div class="sponsor-name">Juniper Yoga Studio</div>
+        <div class="spotlight-frame">
+          <div data-key="Single Video Playful" class="ft" id="ftbxn2dps"></div>
+        </div>
       </div>
     </div>
   </section>
